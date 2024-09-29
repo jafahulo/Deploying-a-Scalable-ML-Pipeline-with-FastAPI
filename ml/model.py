@@ -62,7 +62,12 @@ def inference(model, X):
     preds : np.array
         Predictions from the model.
     """
-    return model.predict(X)
+
+    predictions = model.predict(X)
+    # print(f'Predictions: {predictions}')
+    predictions = (predictions >= 0.5).astype(int)
+    # print(f'Cleaned Predictions: {predictions}')
+    return predictions
 
 
 def save_model(model, path):
@@ -124,7 +129,7 @@ def performance_on_categorical_slice(
     fbeta : float
 
     """
-    data_slice = data[column_name].loc[slice_value]
+    data_slice = data[data[column_name] == slice_value]
     # TODO: implement the function
     X_slice, y_slice, _, _ = process_data(
         data_slice,
